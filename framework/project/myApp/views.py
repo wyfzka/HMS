@@ -20,6 +20,23 @@ class UserForm_regist(forms.Form):   #注册表单
     grade = forms.IntegerField(label='班级')
     isTeacher = forms.CharField(required=False, label='老师密钥（可不填)')
 
+class UserForm_teacher(forms.Form):   #教师修改信息表单
+    sname = forms.CharField(label='姓名',max_length=50)
+    sgender = forms.BooleanField(required=False,label='性别：男')
+    sage = forms.IntegerField(label='年龄')
+    sgrade = forms.IntegerField(label='班级')
+    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    email = forms.EmailField(label='邮箱')
+
+class UserForm_student(forms.Form):   #学生修改信息表单
+    sname = forms.CharField(label='姓名',max_length=50)
+    sgender = forms.BooleanField(required=False,label='性别：男')
+    sage = forms.IntegerField(label='年龄')
+    sgrade = forms.IntegerField(label='班级')
+    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    email = forms.EmailField(label='邮箱')
+
+
 class UserForm_login(forms.Form):   #登录表单
     username = forms.CharField(label='用户名',max_length=50)
     password = forms.CharField(label='密码',widget=forms.PasswordInput())
@@ -66,7 +83,6 @@ def regist(request):   #注册函数
 
 
 
-from django.views.decorators.csrf import csrf_exempt
 from .models import Teacher
 @csrf_exempt
 def login(request):   #登录函数
@@ -96,3 +112,60 @@ def login(request):   #登录函数
         userform = UserForm_login()
     return render_to_response('myApp/login.html',{'userform':userform})
 
+
+
+def check_teacher_info(request,num):   #查看老师个人信息
+    teacher = Teacher.objects.get(pk=num)
+    user = User.objects.get(username=teacher.sname)
+    return render_to_response('myApp/check_teacher_info.html', {'teacher': teacher,'user': user})
+
+
+def check_student_info(request,num):   #查看学生个人信息
+    student = Student.objects.get(pk=num)
+    user = User.objects.get(username=student.sname)
+    return render_to_response('myApp/check_student_info.html', {'student': student,'user': user})
+
+
+
+@csrf_exempt
+def alter_teacher_info(request,num):   #修改老师个人信息
+    if request.method == 'POST':
+        userform = UserForm_teacher(request.POST)
+        if userform.is_valid():
+            sname = userform.cleaned_data['sname']
+            sgender = userform.cleaned_data['sgender']
+            sage = userform.cleaned_data['sage']
+            sgrade = userform.cleaned_data['sgrade']
+            password = userform.cleaned_data['password']
+            email = userform.cleaned_data['email']
+
+            teacher=Teacher.objects.get(pk=num)
+            User.objects.filter(username=teacher.sname).update(password=password,email=email)
+            Teacher.objects.filter(pk=num).update(sname=sname,sgender=sgender,sage=sage,sgrade=sgrade)
+
+            return HttpResponse('成功修改老师信息！')
+    else:
+        userform = UserForm_teacher()
+    return render_to_response('myApp/alter_teacher_info.html',{'userform':userform})
+
+
+@csrf_exempt
+def alter_student_info(request,num):   #修改学生个人信息
+    if request.method == 'POST':
+        userform = UserForm_student(request.POST)
+        if userform.is_valid():
+            sname = userform.cleaned_data['sname']
+            sgender = userform.cleaned_data['sgender']
+            sage = userform.cleaned_data['sage']
+            sgrade = userform.cleaned_data['sgrade']
+            password = userform.cleaned_data['password']
+            email = userform.cleaned_data['email']
+
+            student=Student.objects.get(pk=num)
+            User.objects.filter(username=student.sname).update(password=password,email=email)
+            Student.objects.filter(pk=num).update(sname=sname,sgender=sgender,sage=sage,sgrade=sgrade)
+
+            return HttpResponse('成功修改学生信息！')
+    else:
+        userform = UserForm_student()
+    return render_to_response('myApp/alter_student_info.html',{'userform':userform})
