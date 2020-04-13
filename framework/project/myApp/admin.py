@@ -31,7 +31,7 @@ class TeacherAdmin(admin.ModelAdmin):
         else:
             return "女"
     gender.short_description = "性别"
-    list_display = ['pk','sname','sage',gender,'sgrade','isDelete']
+    list_display = ['pk','sname','sage',gender,'isDelete']
     list_per_page = 10
 
     actions_on_bottom = True
