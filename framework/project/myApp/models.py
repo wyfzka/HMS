@@ -47,8 +47,8 @@ class Homework(models.Model):  # 作业类
     teacher_email = models.EmailField()
     student_id = models.IntegerField()
     homework_content = models.CharField(max_length=50)
-    homework_deadline = models.CharField(max_length=20)
-    handIn_homework = models.FileField(null=True)
+    homework_deadline = models.DateTimeField(max_length=20)
+    handIn_homework = models.FileField(null=True,upload_to='avatar/')
     handIn_time = models.DateTimeField(null=True, auto_now=False, auto_now_add=False)
     isLate = models.BooleanField(default=False)
 

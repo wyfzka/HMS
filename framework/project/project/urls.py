@@ -18,7 +18,14 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from django.conf.urls import include
+
+from django.urls import  include
+from django.urls import path
+from  django.contrib import admin
+from django.conf.urls.static import static
+from . import settings
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('myApp.urls')),#转到myApp中的urls配置路由
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

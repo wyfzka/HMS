@@ -3,6 +3,9 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from . import views, view_firstWeek
 
+from django.urls import path
+from . import  views
+
 admin.autodiscover()
 
 urlpatterns = [
@@ -21,5 +24,9 @@ urlpatterns = [
     url(r'^login/5/(\d+)$',view_firstWeek.launch_homework),
     #firstWeek的模板及view_firstWeek的视图
 
+
+    url(r'^login/6/(\d+)$',view_firstWeek.check_student_homework),  #查看作业
+
+    url(r'^login/7/(\d+)$',view_firstWeek.submit_student_homework) #提交作业
 
 ]

@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -125,3 +126,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#  MyProject.settings.py 里面设置MEDIA_ROOT and MEDIA_URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'avatar')#即项目路径下的media文件夹，没有则自动创建
+MEDIA_URL = '/avatar/' #这个是在浏览器上访问该上传文件的url的前缀
