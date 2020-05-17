@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>作业分类列表_未提交作业</title>
+
+</head>
+<style>
+        html,body{text-align:center;margin:0px auto;}
+</style>
+<body>
+<h1></h1>
+<h2>详细作业列表(按发布时间排序)</h2>
+<u1>
+        {% for homework in page %}
+        <tr>
+            <li>作业内容：{{homework.homework_content}}</li>
+            <li>发布时间：{{homework.homework_create_time}}</li>
+            <li>截止时间：{{homework.homework_deadline}}</li>
+        </tr>
+
+        <a href="http://127.0.0.1:8000/login/7/{{homework.id}}"><input type="submit" value = "提交作业" /></a>
+        <pre></pre>
+        {% endfor %}
+
+        <a href="http://127.0.0.1:8000/login/15/{{student_id}}/{{teacher_id}}/1"><input type="submit" value = "截止时间排序" /></a>
+        <a href="http://127.0.0.1:8000/login/15/1/{{student_id}}/{{teacher_id}}/1"><input type="submit" value = "发布时间排序" /></a>
+
+</u1>
+
+
+ <nav aria-label="Page navigation">
+		<div class="pagination">
+			<ul class="pagination">
+			{% if page.has_previous %}
+				<li>
+                    <a href="http://127.0.0.1:8000/login/15/1/{{student_id}}/{{teacher_id}}/{{page.previous_page_number}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+
+            {% for num in page.paginator.page_range %}
+            	{% if pindex == page.number %}
+                	<li class="active"><a href="http://127.0.0.1:8000/login/15/1/{{student_id}}/{{teacher_id}}/{{num}}">{{ num }}</a></li>
+                {% else %}
+                    <li><a href="http://127.0.0.1:8000/login/15/1/{{student_id}}/{{teacher_id}}/{{num}}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if page.has_next %}
+                 <li>
+                     <a href="http://127.0.0.1:8000/login/15/1/{{student_id}}/{{teacher_id}}/{{page.next_page_number}}" aria-label="Next">
+                         <span aria-hidden="true">&raquo;</span>
+                     </a>
+                 </li>
+            {% else %}
+                 <li class="disabled">
+                     <a href="" aria-label="Previous">
+                         <span aria-hidden="true">&raquo;</span>
+                     </a>
+                 </li>
+            {% endif %}
+       		</ul>
+		</div>
+ </nav>
+
+</body>
+</html>

@@ -12,12 +12,15 @@
 </style>
 <body>
 <h1>记得在规定期限内提交作业哦~</h1>
+<h2>未完成作业</h2>
 <u1>
-        {%for homework in homeworkList%}
-    <li>
+        {%for homework in uncompleted_homeworkList%}
+
         <!--<a href="{{homework.student_id}}/{{homework.id}}">-->
-            {{homework.homework_deadline}},{{homework.homework_content}},{{homework.teacher_email}},
-            {{homework.homework_create_time}}
+       <li> <I>作业时间：</I> {{homework.homework_create_time}} -{{homework.homework_deadline}} </li>
+       <li><I>作业内容：</I> {{homework.homework_content}}</li>
+       <li><I>老师姓名：</I> {{homework.teacher_name}},</li>
+
 
         <a href="http://127.0.0.1:8000/login/7/{{homework.id}}">
             <input type="submit" value = "提交作业" />
@@ -26,6 +29,34 @@
 
 
     </li>
+
+
+
+    </li>
+
+</li>
+
+        {%endfor%}
+</u1>
+
+<h2>已完成作业</h2>
+<u1>
+        {%for homework in completed_homeworkList%}
+
+        <!--<a href="{{homework.student_id}}/{{homework.id}}">-->
+       <li> <I>作业时间：</I> {{homework.homework_create_time}} -{{homework.homework_deadline}} </li>
+       <li><I>作业内容：</I> {{homework.homework_content}}</li>
+       <li><I>老师姓名：</I> {{homework.teacher_name}},</li>
+
+        <a href="http://127.0.0.1:8000/login/13/{{homework.id}}">
+            <input type="submit" value = "查看作业及老师批改" />
+        </a>
+       <!--<input type="submit" value = "提交作业" /></a>-->
+
+</li>
+
+
+
         {%endfor%}
 </u1>
 

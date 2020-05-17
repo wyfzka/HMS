@@ -4,13 +4,61 @@
     <meta charset="UTF-8">
     <title>查看老师个人信息</title>
 </head>
-<body>
-<div class="row text-center vertical-middle-sm">
-
 <style>
-        html,body{text-align:center;margin:0px auto;}
-</style>
+		*{padding: 0;margin: 0;}  /* 先重置一下html，消除HTML标签默认的内外边距 */
+		    .wrap{width: 1920px;margin: 0 auto ;}    /* 对导航的内容设置一个主体为800px的宽并使其居中 */
+		    .clear{clear: both;}  /* 清除浮动 */
+		    a{text-decoration-line: none;}   /* 去掉默认a标签的下划线 */
+		    ul,li{list-style: none;}
+		    nav .level>li{float: left;width: 16.66%;text-align: center;background: #a7abff;padding: 10px 0;font-size: 16px;transition: .4s;}
 
+		    nav .level>li:hover{background-color: #9ba78c;color: #FFFFFF;}   /* 设置鼠标滑过后的样式 */
+		    nav .level>li>a:hover{color: #FFFFFF;}
+		    nav .two{display: none;margin-top: 10px;}  /* 先使二级菜单的内容隐藏 */
+		    nav .level>li:hover .two{display: block;}   /* 鼠标滑过一级菜单后的显示二级菜单 */
+		    nav .two>li>a{color: rgb(85,26,139);}
+		    nav .two li{padding: 5px 0;transition: .4s;cursor: pointer;}
+		    nav .two li:hover{background: pink;}
+            nav .two>li>a:hover{color: #FFFFFF;}
+            html,body{text-align:center;margin:0px auto;absolute:20% 20%;}
+            .aaa{position: absolute;
+            left: 40%;
+            top : 30%;}
+</style>
+<body>
+<nav>
+	        <div class="wrap">
+	            <ul class="level">
+	                <li style="background-color: #a7abff;color: black">欢迎来到你的个人空间~</li>
+					<li ><a href="#">首页</a></li>
+	                <li>
+	                    <a  href="#">班级</a>
+	                    <ul class="two">
+	                        <li><a href="./11/{{teacher_id}}">查看所教班级</a></li>
+
+	                    </ul>
+	                </li>
+	                <li>
+	                    <a style="color: white" href="#">个人信息</a>
+	                    <ul class="two">
+	                        <li><a style="color: white" href="">查看个人信息</a></li>
+	                        <li><a href="./0/{{teacher_id}}">修改个人信息</a></li>
+	                    </ul>
+	                </li>
+                    <li>
+	                    <a href="#">作业</a>
+	                    <ul class="two">
+	                        <li><a href="./5/{{teacher_id}}">发布主观题作业</a></li>
+	                        <li><a href="./16/{{teacher_id}}">发布客观题作业</a></li>
+                            <li><a href="./8/{{teacher_id}}/1">查看主观题</a> </li>
+                            <li><a href="./17/{{teacher_id}}/1">查看客观题</a> </li>
+	                    </ul>
+	                </li>
+	            </ul>
+	        </div>
+	    </nav>
+<div class="aaa">
+<div class="row text-center vertical-middle-sm">
 <h1>您的个人信息</h1>
     <div class="row">
         <div class="col-md-6" >
@@ -58,6 +106,7 @@
         </div>
     </div>
 
+</div>
 </div>
 </body>
 </html>

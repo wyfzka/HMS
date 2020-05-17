@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>显示并批改作业</title>
+</head>
+<style>
+        html,body{text-align:center;margin:0px auto;}
+</style>
+<body>
+<a href="http://127.0.0.1:8000/login/download/{{file_name}}">
+    <button class="btn bg-danger">下载作业</button>
+</a>
+<p><span> 学生反馈评论：  {{feedback_comment}} </span></p >
+<form method = 'post' enctype="multipart/form-data">{% csrf_token %}
+{{userform.as_p}}
+<input type="submit" value = "添加反馈" />
+</form>
+</body>
+</html>

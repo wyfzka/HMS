@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>作业分类列表_已提交作业</title>
+
+</head>
+<style>
+        html,body{text-align:center;margin:0px auto;}
+</style>
+<body>
+<h1></h1>
+<h2>详细作业列表(按发布时间排序)</h2>
+<u1>
+        {%for homework in page%}
+                <li><I>发布时间：</I> {{homework.homework_create_time}}</li>
+                <li><I>提交时间：</I> {{homework.handIn_time}}</li>
+                <li><I>作业内容：</I> {{homework.homework_content}}</li>
+                <li><I>提交的作业：</I> {{homework.handIn_homework}}</li>
+                {%for homework1 in homework1List%}
+                     {% if homework1.id == homework.id %}
+                          <li><I>答题情况：</I>
+                              {% if homework1.iscommented == False %}
+                              <p><span>  待批改 </span></p>
+                              {% endif %}
+
+                              {% if homework1.iscorrect == True %}
+                              <p><span>  正确√</span></p>
+                              {% elif homework1.iscorrect == False %}
+                              <p><span>  错误×</span></p>
+                              {% endif %}
+                          </li>
+                          <li><I>老师批改评论：</I> {{homework1.tcomment}}</li>
+
+
+                              {% if homework1.iscommented == True %}
+
+                                    {% if homework1.iscorrect == False %}
+                                          {%if homework1.isfeedback == False %}
+                                              <p><span>  作业错误且尚未订正，请尽快提交订正 </span></p >
+                                          {% elif homework1.isfeedback == True %}
+                                              {% if homework1.isright == False %}
+                                                 <p><span>  订正内容错误，请重新提交 </span></p >
+                                              {% endif %}
+                                          {% endif %}
+                                  {% elif homework1.iscorrect == true %}
+                                          {% if homework1.isright == False %}
+                                             <p><span>  反馈内容存在问题，可以重新进行反馈 </span></p >
+                                          {% endif %}
+                                  {% endif %}
+
+
+                                    {% if homework1.iscorrect == False %}
+                                      <a href="http://127.0.0.1:8000/login/14/1/{{homework1.student_id}}/{{homework.teacher_id}}/{{homework1.pk}} ">
+                                      <input type="submit" value = "提交订正" />
+                                      </a>
+                                    {% elif homework1.iscorrect == True %}
+                                      <a href="http://127.0.0.1:8000/login/14/1/{{homework1.student_id}}/{{homework.teacher_id}}/{{homework1.pk}} ">
+                                      <input type="submit" value = "进行反馈" />
+                                      </a>
+                                    {% endif %}
+                              {% elif homework1.iscommented == False %}
+                                   <p><span>  老师尚未批改，可以重新提交 </span></p >
+                                   <a href="http://127.0.0.1:8000/login/7/{{homework.id}}">
+                                   <input type="submit" value = "重新提交作业" />
+                                   </a>
+                              {% endif %}
+
+
+
+                    {% endif %}
+                {%endfor%}
+                <pre></pre>
+        {%endfor%}
+        <a href="http://127.0.0.1:8000/login/14/{{student_id}}/{{teacher_id}}/1"><input type="submit" value = "提交时间排序" /></a>
+        <a href="http://127.0.0.1:8000/login/14/1/{{student_id}}/{{teacher_id}}/1"><input type="submit" value = "发布时间排序" /></a>
+</u1>
+
+
+<nav aria-label="Page navigation">
+		<div class="pagination">
+			<ul class="pagination">
+			{% if page.has_previous %}
+				<li>
+                    <a href="http://127.0.0.1:8000/login/14/1/{{student_id}}/{{teacher_id}}/{{page.previous_page_number}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="disabled">
+                    <a href="" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+
+            {% for num in page.paginator.page_range %}
+            	{% if pindex == page.number %}
+                	<li class="active"><a href="http://127.0.0.1:8000/login/14/1/{{student_id}}/{{teacher_id}}/{{num}}">{{ num }}</a></li>
+                {% else %}
+                    <li><a href="http://127.0.0.1:8000/login/14/1/{{student_id}}/{{teacher_id}}/{{num}}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if page.has_next %}
+                 <li>
+                     <a href="http://127.0.0.1:8000/login/14/1/{{student_id}}/{{teacher_id}}/{{page.next_page_number}}" aria-label="Next">
+                         <span aria-hidden="true">&raquo;</span>
+                     </a>
+                 </li>
+            {% else %}
+                 <li class="disabled">
+                     <a href="" aria-label="Previous">
+                         <span aria-hidden="true">&raquo;</span>
+                     </a>
+                 </li>
+            {% endif %}
+       		</ul>
+		</div>
+ </nav>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>该班级学生信息</title>
+
+</head>
+<style>
+        html,body{text-align:center;margin:0px auto;}
+</style>
+<body>
+<h1>该班级学生情况如下：</h1>
+<o1>
+        {%for Student in studentlist%}
+
+        <!--<a href="{{homework.student_id}}/{{homework.id}}">-->
+    <li><b>姓名:</b> {{Student.sname}}
+        <b>性别:</b> {% if Student.sgender == False %}
+                     女
+                     {% elif Student.sgender == True %}
+                    男
+        {% endif %}
+        <b>年龄:</b> {{Student.sage}}
+        <b>邮箱:</b> {{Student.semail}}
+    </li>
+
+
+
+       <!--<input type="submit" value = "提交作业" /></a>-->
+
+</li>
+
+        {%endfor%}
+</o1>
+
+</body>
+

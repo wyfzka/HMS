@@ -50,12 +50,6 @@ class UserForm_teacher_add_grade(forms.Form):  # 添加老师所教班级表单
     grade3 = forms.CharField(required=False, label='所教班级号3(非必填)', max_length=20)
 
 
-class UserForm_teacher_delete_grade(forms.Form):  # 删除老师所教班级表单
-    grade1 = forms.CharField(required=False, label='删除所教班级号1(非必填)', max_length=20)
-    grade2 = forms.CharField(required=False, label='删除所教班级号2(非必填)', max_length=20)
-    grade3 = forms.CharField(required=False, label='删除所教班级号3(非必填)', max_length=20)
-
-
 TeacherPassword = "12345678"  # 老师身份验证的密码
 
 
@@ -72,13 +66,20 @@ def regist(request):  # 注册函数
             grade = userform.cleaned_data['grade']
             isTeacher = userform.cleaned_data['isTeacher']
 
+            userList0 = User.objects.all()
+            for user0 in userList0:
+                if user0.email == email:
+                    return HttpResponse('这个邮箱已经被注册了!!!')
+
+
             if isTeacher == "":
                 user = User.objects.create(username=username, password=password, email=email, gender=gender, age=age,
                                            grade=grade, isTeacher=-1)
                 user.save()
-                student = Student.objects.create(sname=username, sgender=gender, sage=age, sgrade=grade, semail=email, isDelete=False)
+                student = Student.objects.create(sname=username, sgender=gender, sage=age, sgrade=grade, semail=email,
+                                                 isDelete=False)
                 student.save()
-                return HttpResponse('Student registered!!!')
+                return HttpResponse('成功注册学生用户!!!')
 
             if isTeacher != TeacherPassword:
                 user = User.objects.create(username=username, password=password, email=email, gender=gender, age=age,
@@ -87,7 +88,7 @@ def regist(request):  # 注册函数
                 student = Student.objects.create(sname=username, sgender=gender, sage=age, sgrade=grade, semail=email,
                                                  isDelete=False)
                 student.save()
-                return HttpResponse('Student registered!!!')
+                return HttpResponse('成功注册学生用户!!!')
 
             if isTeacher == TeacherPassword:
                 user = User.objects.create(username=username, password=password, email=email, gender=gender, age=age,
@@ -95,7 +96,7 @@ def regist(request):  # 注册函数
                 user.save()
                 teacher = Teacher.objects.create(sname=username, sgender=gender, sage=age, semail=email, isDelete=False)
                 teacher.save()
-                return HttpResponse('Teacher registered!!!')
+                return HttpResponse('成功注册老师用户!!!')
     else:
         userform = UserForm_regist()
     return render_to_response('myApp/preparation/regist.html', {'userform': userform})  # error
@@ -113,7 +114,8 @@ def login(request):  # 登录函数
             user = User.objects.filter(email__exact=email, password__exact=password)
             if user and isTeacher == TeacherPassword:
                 teacher = Teacher.objects.get(semail=email)
-                return render_to_response('myApp/preparation/info_teacher.html', {'teacher': teacher})
+                pindex = 1
+                return render_to_response('myApp/preparation/info_teacher.html', {'teacher': teacher, 'pindex': pindex})
 
             if user and isTeacher == "":
                 student = Student.objects.get(semail=email)
@@ -135,7 +137,7 @@ def check_teacher_info(request, num):  # 查看老师个人信息
     user = User.objects.get(username=teacher.sname)
     teacher_grade_List = Teacher_grade.objects.filter(teacher_id=teacher.pk)
     return render_to_response('myApp/preparation/check_teacher_info.html',
-                              {'teacher': teacher, 'user': user, 'teacher_grade_List': teacher_grade_List})
+                              {'teacher': teacher, 'user': user, 'teacher_grade_List': teacher_grade_List,'teacher_id':num})
 
 
 def check_student_info(request, num):  # 查看学生个人信息
@@ -162,7 +164,7 @@ def alter_teacher_info(request, num):  # 修改老师个人信息
             return HttpResponse('成功修改老师信息！')
     else:
         userform = UserForm_teacher()
-    return render_to_response('myApp/preparation/alter_teacher_info.html', {'userform': userform})
+    return render_to_response('myApp/preparation/alter_teacher_info.html', {'userform': userform, 'teacher_id': num})
 
 
 @csrf_exempt
@@ -184,7 +186,7 @@ def alter_student_info(request, num):  # 修改学生个人信息
             return HttpResponse('成功修改学生信息！')
     else:
         userform = UserForm_student()
-    return render_to_response('myApp/preparation/alter_student_info.html', {'userform': userform})
+    return render_to_response('myApp/preparation/alter_student_info.html', {'userform': userform, 'studentId': num})
 
 
 @csrf_exempt
@@ -225,33 +227,21 @@ def add_teacher_grade(request, num):  # 添加老师所教班级
     return render_to_response('myApp/preparation/add_teacher_grade.html', {'userform': userform})
 
 
-@csrf_exempt
 def delete_teacher_grade(request, num):  # 删除老师所教班级
-    if request.method == 'POST':
-        userform = UserForm_teacher_delete_grade(request.POST)
-        if userform.is_valid():
-            grade1 = userform.cleaned_data['grade1']
-            grade2 = userform.cleaned_data['grade2']
-            grade3 = userform.cleaned_data['grade3']
-
-            teacher = Teacher.objects.get(pk=num)
-
-            flag = False
-
-            if grade1 != "":
-                Teacher_grade.objects.filter(grade=grade1, teacher_id=teacher.pk).delete()
-                flag = True
-
-            if grade2 != "":
-                Teacher_grade.objects.filter(grade=grade2, teacher_id=teacher.pk).delete()
-                flag = True
-
-            if grade3 != "":
-                Teacher_grade.objects.filter(grade=grade3, teacher_id=teacher.pk).delete()
-                flag = True
-
-            if flag:
-                return HttpResponse('成功删除所教班级！')
+    teacher_gradeList = Teacher_grade.objects.filter(pk=num)
+    if teacher_gradeList:
+        Teacher_grade.objects.filter(pk=num).delete()
+        return HttpResponse("成功删除该班级")
     else:
-        userform = UserForm_teacher_delete_grade()
-    return render_to_response('myApp/preparation/delete_teacher_grade.html', {'userform': userform})
+        return HttpResponse("未添加该班级")
+
+
+def check_gradelist(request, num):  # 老师查看所属班级
+    gradelist = Teacher_grade.objects.filter(teacher_id=num)
+
+    return render_to_response('myApp/preparation/check_gradelist.html', {'gradelist': gradelist, 'teacher_id': num})
+
+
+def check_studentlist(request, char):  # 老师查看所属班级学生信息
+    studentlist = Student.objects.filter(sgrade=char)
+    return render_to_response('myApp/preparation/check_studentlist.html', {'studentlist': studentlist})

@@ -127,6 +127,14 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    ("css", os.path.join(STATIC_ROOT, "css")),
+    ("js", os.path.join(STATIC_ROOT, "js")),
+    ("img", os.path.join(STATIC_ROOT, "img")),
+    ("jq", os.path.join(STATIC_ROOT, "jq")),
+]
 #  MyProject.settings.py 里面设置MEDIA_ROOT and MEDIA_URL
-MEDIA_ROOT = os.path.join(BASE_DIR, 'avatar')#即项目路径下的media文件夹，没有则自动创建
-MEDIA_URL = '/avatar/' #这个是在浏览器上访问该上传文件的url的前缀
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media') #即项目路径下的media文件夹，没有则自动创建
+MEDIA_URL = '/static/media/' #这个是在浏览器上访问该上传文件的url的前缀
+

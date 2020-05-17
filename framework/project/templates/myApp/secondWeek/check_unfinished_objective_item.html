@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>老师分类列表_未提交客观题</title>
+
+</head>
+<style>
+		*{padding: 0;margin: 0;}  /* 先重置一下html，消除HTML标签默认的内外边距 */
+		    .wrap{width: 2400px;margin: 0 auto ;}    /* 对导航的内容设置一个主体为800px的宽并使其居中 */
+		    .clear{clear: both;}  /* 清除浮动 */
+		    a{text-decoration-line: none;}   /* 去掉默认a标签的下划线 */
+		    ul,li{list-style: none;}
+		    nav .level>li{float: left;width: 16.66%;text-align: center;background: #a7abff;padding: 10px 0;font-size: 16px;transition: .4s;}
+
+		    nav .level>li:hover{background-color: #9ba78c;color: #FFFFFF;}   /* 设置鼠标滑过后的样式 */
+		    nav .level>li>a:hover{color: #FFFFFF;}
+		    nav .two{display: none;margin-top: 10px;}  /* 先使二级菜单的内容隐藏 */
+		    nav .level>li:hover .two{display: block;}   /* 鼠标滑过一级菜单后的显示二级菜单 */
+		    nav .two>li>a{color: rgb(85,26,139);}
+		    nav .two li{padding: 5px 0;transition: .4s;cursor: pointer;}
+		    nav .two li:hover{background: pink;}
+            nav .two>li>a:hover{color: #FFFFFF;}
+            html,body{text-align:center;margin:0px auto;absolute:20% 20%;}
+            .aaa{position: absolute;
+            left: 45%;
+            top : 30%;}
+</style>
+<body>
+<nav>
+	        <div class="wrap">
+	            <ul class="level">
+	                <li style="background-color: #a7abff;color: black">欢迎来到你的个人空间~</li>
+					<li><a href="#">首页</a></li>
+	                <li>
+	                    <a href="#">个人信息</a>
+	                    <ul class="two">
+	                        <li><a href="../1/{{studentId}}">查看个人信息</a></li>
+	                        <li><a href="../2/{{studentId}}">修改个人信息</a></li>
+	                    </ul>
+	                </li>
+	                <li>
+	                    <a style="color: white" href="#">作业</a>
+	                    <ul class="two">
+	                        <li><a href="../6/{{studentId}}">已提交作业</a></li>
+	                        <li><a href="../13/{{studentId}}">待提交作业</a></li>
+	                        <li><a href="../21/{{studentId}}">已提交客观题</a></li>
+							<li><a style="color: white" href="">待提交客观题</a></li>
+	                    </ul>
+	                </li>
+
+	            </ul>
+	        </div>
+	    </nav>
+<div class="aaa">
+<h1></h1>
+<h2>任课老师列表</h2>
+<u1>
+        {%for teacher in teacherList%}
+                <li>老师姓名：{{teacher.sname}}</li>
+                <li>老师邮箱：{{teacher.semail}}</li>
+                <a href="http://127.0.0.1:8000/login/22/{{studentId}}/{{teacher.id}}/{{pindex}}">
+                <input type="submit" value = "查看该老师布置的客观题" />
+            </a>
+        {%endfor%}
+</u1>
+</div>
+</body>
+</html>
